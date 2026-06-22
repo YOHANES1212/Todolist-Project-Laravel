@@ -92,7 +92,7 @@
                             </a>
                         </div>
 
-                        <p class="text-center text-sm text-slate-500">Don't have an account? <a href="#" class="font-semibold text-[#ff5d5a] hover:text-[#ff3f3a]">Create One</a></p>
+                        <p class="text-center text-sm text-slate-500">Don't have an account? <a href="{{ route('register') }}" class="font-semibold text-[#ff5d5a] hover:text-[#ff3f3a]">Create One</a></p>
                     </div>
 
                     <div class="relative hidden overflow-hidden bg-[#ffebe9] p-8 lg:flex lg:flex-col lg:items-center lg:justify-center">

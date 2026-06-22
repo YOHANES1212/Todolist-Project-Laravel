@@ -8,5 +8,5 @@ class TaskPriority extends Model
 {
     protected $table = 'task_priority';
     protected $fillable = ['priority_name'];
-    public $timestamps = false;
+    public $timestamps = true;
 }

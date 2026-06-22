@@ -41,15 +41,15 @@
             </div>
 
             <ul class="menu-list">
-                <li><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="/vital-task"><i class="fas fa-bolt"></i> Vital Task</a></li>
-                <li class="active"><a href="/"><i class="far fa-calendar-check"></i> My Task</a></li>
-                <li><a href="#"><i class="fas fa-list-ul"></i> Task Categories</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                <li><a href="#"><i class="far fa-question-circle"></i> Help</a></li>
+                <li><a href="{{ route('dashboard') }}"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li><a href="{{ route('vital_task') }}"><i class="fas fa-bolt"></i> Vital Task</a></li>
+                <li class="active"><a href="{{ route('my_task') }}"><i class="far fa-calendar-check"></i> My Task</a></li>
+                <li><a href="{{ route('task_kategori.index') }}"><i class="fas fa-list-ul"></i> Task Categories</a></li>
+                <li><a href="{{ route('profile') }}"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" onclick="showLogoutModal(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
 
-            <ul class="menu-list logout">
+            <ul class="menu-list logout" style="display:none;">
                 <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </aside>
@@ -148,6 +148,21 @@
         </div>
     </div>
 
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="modal-overlay" onclick="hideLogoutModal()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);"></div>
+        <div class="modal-content" style="position: relative; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center; max-width: 400px; width: 90%; transform: scale(0.8); transition: transform 0.3s ease;">
+            <h1>Are You Sure?</h1>
+            <p>You will be logged out of the current account.</p>
+            <form method="POST" action="{{ route('logout') }}" style="display: flex; justify-content: center; gap: 10px;">
+                @csrf
+                <button type="submit" style="padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; background: #dc3545; color: white;">Yes</button>
+                <button type="button" onclick="hideLogoutModal()" style="padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; background: #6c757d; color: white;">No</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/common.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>

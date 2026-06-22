@@ -8,5 +8,5 @@ class TaskStatus extends Model
 {
     protected $table = 'task_status';
     protected $fillable = ['status_name'];
-    public $timestamps = false;
+    public $timestamps = true;
 }

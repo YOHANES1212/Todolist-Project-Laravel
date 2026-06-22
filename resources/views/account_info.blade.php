@@ -22,11 +22,11 @@
         <!-- Navigation Menu -->
         <nav class="sidebar-menu">
             <ul>
-                <li><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fas fa-exclamation-circle"></i> Vital Task</a></li>
-                <li><a href="#"><i class="fas fa-tasks"></i> My Task</a></li>
-                <li><a href="#"><i class="fas fa-list"></i> Task Categories</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="{{ route('dashboard') }}"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li><a href="{{ route('vital_task') }}"><i class="fas fa-exclamation-circle"></i> Vital Task</a></li>
+                <li><a href="{{ route('my_task') }}"><i class="fas fa-tasks"></i> My Task</a></li>
+                <li><a href="{{ route('task_kategori.index') }}"><i class="fas fa-list"></i> Task Categories</a></li>
+                <li><a href="{{ route('profile') }}"><i class="fas fa-cog"></i> Settings</a></li>
                 <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
             </ul>
         </nav>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
 
-                <form id="photoForm" class="account-form" method="post" action="{{ route('account.info.post') }}" enctype="multipart/form-data">
+                <form id="photoForm" class="account-form" method="post" action="{{ route('account.info.update') }}" enctype="multipart/form-data">
                     @csrf
                     <input id="profile_pic_input" type="file" name="profile_pic" accept="image/*" style="display:none;">
                     <input id="remove_photo" type="hidden" name="remove_photo" value="no">

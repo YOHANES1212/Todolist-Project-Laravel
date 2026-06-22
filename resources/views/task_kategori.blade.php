@@ -131,19 +131,19 @@
     <nav class="sidebar-nav">
       <ul>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{{ route('dashboard') }}" class="nav-link">
             <i class="fa fa-th-large nav-icon"></i>
             <span>Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{{ route('vital_task') }}" class="nav-link">
             <i class="fa fa-exclamation-circle nav-icon"></i>
             <span>Vital Task</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{{ route('my_task') }}" class="nav-link">
             <i class="fa fa-check-square nav-icon"></i>
             <span>My Task</span>
           </a>
@@ -156,15 +156,9 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{{ route('profile') }}" class="nav-link">
             <i class="fa fa-cog nav-icon"></i>
             <span>Settings</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="fa fa-question-circle nav-icon"></i>
-            <span>Help</span>
           </a>
         </li>
       </ul>
@@ -172,7 +166,7 @@
 
     {{-- Logout --}}
     <div class="sidebar-logout">
-      <a href="#" class="nav-link">
+      <a href="#" onclick="showLogoutModal(); return false;" class="nav-link">
         <i class="fa fa-sign-out-alt nav-icon"></i>
         <span>Logout</span>
       </a>
@@ -620,5 +614,21 @@
     }
   });
 </script>
+
+<!-- Logout Modal -->
+<div id="logoutModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="modal-overlay" onclick="hideLogoutModal()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);"></div>
+    <div class="modal-content" style="position: relative; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center; max-width: 400px; width: 90%; transform: scale(0.8); transition: transform 0.3s ease;">
+        <h1>Are You Sure?</h1>
+        <p>You will be logged out of the current account.</p>
+        <form method="POST" action="{{ route('logout') }}" style="display: flex; justify-content: center; gap: 10px;">
+            @csrf
+            <button type="submit" style="padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; background: #dc3545; color: white;">Yes</button>
+            <button type="button" onclick="hideLogoutModal()" style="padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; background: #6c757d; color: white;">No</button>
+        </form>
+    </div>
+</div>
+
+<script src="{{ asset('js/common.js') }}"></script>
 </body>
 </html>
