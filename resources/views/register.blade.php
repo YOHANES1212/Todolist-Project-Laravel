@@ -248,22 +248,11 @@
 
             <article class="card">
                 <h1>Sign Up</h1>
-                <form action="#" method="POST">
+                <form action="{{ route('register.submit') }}" method="POST">
                     @csrf
-                    <div class="double">
-                        <label class="field">
-                            <svg viewBox="0 0 24 24" fill="none"><path d="M15.5 7.5l-7 7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 7.5h6v6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <input type="text" name="first_name" placeholder="Enter First Name" required>
-                        </label>
-                        <label class="field">
-                            <svg viewBox="0 0 24 24" fill="none"><path d="M15.5 7.5l-7 7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 7.5h6v6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <input type="text" name="last_name" placeholder="Enter Last Name" required>
-                        </label>
-                    </div>
-
                     <label class="field">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <input type="text" name="username" placeholder="Enter Username" required>
+                        <input type="text" name="name" placeholder="Enter Full Name" required>
                     </label>
 
                     <label class="field">

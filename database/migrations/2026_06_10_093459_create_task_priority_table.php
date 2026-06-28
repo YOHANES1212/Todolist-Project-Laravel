@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_priority', function (Blueprint $table) {
-            $table->id();
-            $table->string('priority_name');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('task_priority')) {
+            Schema::create('task_priority', function (Blueprint $table) {
+                $table->id();
+                $table->string('priority_name');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

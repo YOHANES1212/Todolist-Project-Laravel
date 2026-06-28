@@ -33,10 +33,10 @@
                             <p class="max-w-sm text-sm text-slate-500">Login untuk melanjutkan ke aplikasi tugas dan kolaborasi Anda.</p>
                         </div>
 
-                        <form action="#" method="POST" class="space-y-5">
+                        <form action="{{ route('login.submit') }}" method="POST" class="space-y-5">
                             @csrf
                             <div class="space-y-2">
-                                <label for="username" class="sr-only">Username</label>
+                                <label for="email" class="sr-only">Email</label>
                                 <div class="relative">
                                     <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
                                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -44,7 +44,7 @@
                                             <circle cx="12" cy="7" r="4" />
                                         </svg>
                                     </span>
-                                    <input id="username" name="username" type="text" placeholder="Enter Username" required class="w-full rounded-2xl border border-slate-200 bg-[#F8F8F8] py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#ff5d5a] focus:ring-2 focus:ring-[#ff5d5a]/15" />
+                                    <input id="email" name="email" type="email" placeholder="Enter Email" required class="w-full rounded-2xl border border-slate-200 bg-[#F8F8F8] py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#ff5d5a] focus:ring-2 focus:ring-[#ff5d5a]/15" />
                                 </div>
                             </div>
 
@@ -63,7 +63,7 @@
 
                             <div class="flex items-center justify-between gap-4 text-sm text-slate-600">
                                 <label class="inline-flex items-center gap-2">
-                                    <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-[#ff5d5a] focus:ring-[#ff5d5a]" />
+                                    <input type="checkbox" name="remember" class="h-4 w-4 rounded border-slate-300 text-[#ff5d5a] focus:ring-[#ff5d5a]" />
                                     Remember Me
                                 </label>
                                 <a href="#" class="font-medium text-[#ff5d5a] hover:text-[#ff3f3a]">Forgot password?</a>
@@ -78,21 +78,21 @@
                         </div>
 
                         <div class="flex items-center justify-center gap-4">
-                            <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#3b5998] transition hover:bg-[#f7f7f7]">
+                            <a href="{{ route('social.redirect', 'facebook') }}" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#3b5998] transition hover:bg-[#f7f7f7]">
                                 <span class="sr-only">Login with Facebook</span>
                                 <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5 3.657 9.125 8.438 9.876v-6.987H7.898v-2.89h2.54V9.833c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.463h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.125 22 17 22 12z"/></svg>
                             </a>
-                            <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#de5246] transition hover:bg-[#f7f7f7]">
+                            <a href="{{ route('social.redirect', 'google') }}" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#de5246] transition hover:bg-[#f7f7f7]">
                                 <span class="sr-only">Login with Google</span>
                                 <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M21.35 11.1H12v2.8h5.35c-.24 1.3-.96 2.4-2.05 3.12v2.6h3.33c1.95-1.8 3.07-4.45 3.07-7.52 0-.53-.04-1.05-.12-1.55z"/><path d="M12 22c2.7 0 4.96-.9 6.61-2.46l-3.33-2.6c-.92.62-2.1.98-3.28.98-2.52 0-4.66-1.7-5.43-3.96H2.98v2.49C4.6 19.9 8.04 22 12 22z"/><path d="M6.57 13.96c-.2-.62-.32-1.28-.32-1.96s.12-1.34.32-1.96V7.55H2.98A9.993 9.993 0 0 0 2 12c0 1.6.38 3.1 1.05 4.45l3.52-2.49z"/><path d="M12 5.4c1.47 0 2.8.5 3.84 1.48l2.88-2.88C16.94 2.38 14.7 1.4 12 1.4 8.04 1.4 4.6 3.5 2.98 7.55l3.52 2.49C7.34 7.1 9.48 5.4 12 5.4z"/></svg>
                             </a>
-                            <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#c13584] transition hover:bg-[#f7f7f7]">
+                            <a href="{{ route('social.redirect', 'instagram') }}" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#c13584] transition hover:bg-[#f7f7f7]">
                                 <span class="sr-only">Login with Instagram</span>
                                 <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5z"/><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm5.5-.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>
                             </a>
                         </div>
 
-                        <p class="text-center text-sm text-slate-500">Don't have an account? <a href="#" class="font-semibold text-[#ff5d5a] hover:text-[#ff3f3a]">Create One</a></p>
+                        <p class="text-center text-sm text-slate-500">Don't have an account? <a href="{{ route('register') }}" class="font-semibold text-[#ff5d5a] hover:text-[#ff3f3a]">Create One</a></p>
                     </div>
 
                     <div class="relative hidden overflow-hidden bg-[#ffebe9] p-8 lg:flex lg:flex-col lg:items-center lg:justify-center">
