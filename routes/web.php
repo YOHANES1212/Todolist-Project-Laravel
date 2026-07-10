@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskKategoriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TaskController;
 
 // Redirect root to task-kategori
 Route::get('/', function () {
@@ -12,9 +14,7 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     // Dashboard route
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Task Kategori Routes
     Route::get('/task-kategori', [TaskKategoriController::class, 'index'])->name('task_kategori.index');
@@ -24,6 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/task-kategori/priority/{id}', [TaskKategoriController::class, 'updatePriority'])->name('task_kategori.updatePriority');
     Route::delete('/task-kategori/status/{id}', [TaskKategoriController::class, 'destroyStatus'])->name('task_kategori.destroyStatus');
     Route::delete('/task-kategori/priority/{id}', [TaskKategoriController::class, 'destroyPriority'])->name('task_kategori.destroyPriority');
+
+    // Task CRUD Routes
+    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
+    Route::patch('/tasks/{task}/priority', [TaskController::class, 'updatePriority'])->name('tasks.updatePriority');
 
     // Task Views
     Route::get('/my-task', function () {
