@@ -1,281 +1,193 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - YukKerjain!</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-</head>
-<body>
-    <div class="dashboard-layout">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="profile-section">
-                <div class="profile-pic">
-                    <img src="https://ui-avatars.com/api/?name=Sundar+Gurung&background=4a5568&color=fff&size=100" alt="Profile">
+@extends('layouts.main')
+
+@section('title', 'Dashboard - YukKerjain!')
+
+@section('content')
+    <div class="flex-1 overflow-y-auto py-[30px] px-[35px]">
+        <!-- WELCOME SECTION -->
+        <div class="flex justify-between items-center mb-[25px]">
+            <h2 class="text-[30px] font-semibold text-[#333]">Welcome back, {{ auth()->user()->first_name ?? auth()->user()->name }} <span class="text-[34px]">👋</span></h2>
+            <div class="flex items-center gap-[15px]">
+                <div class="flex">
+                    <div class="w-[38px] h-[38px] rounded-full text-white flex items-center justify-center text-[13px] font-semibold border-[3px] border-white -ml-3 first:ml-0" style="background: #667eea;">JD</div>
+                    <div class="w-[38px] h-[38px] rounded-full text-white flex items-center justify-center text-[13px] font-semibold border-[3px] border-white -ml-3" style="background: #f093fb;">JS</div>
+                    <div class="w-[38px] h-[38px] rounded-full text-white flex items-center justify-center text-[13px] font-semibold border-[3px] border-white -ml-3" style="background: #4facfe;">BW</div>
+                    <div class="w-[38px] h-[38px] rounded-full text-white flex items-center justify-center text-[13px] font-semibold border-[3px] border-white -ml-3" style="background: #43e97b;">AB</div>
+                    <div class="w-[38px] h-[38px] rounded-full text-white flex items-center justify-center text-[13px] font-semibold border-[3px] border-white -ml-3" style="background: #fa709a;">MD</div>
                 </div>
-                <h3 class="profile-name">Michael Tjandra</h3>
-                <p class="profile-email">Michael@gmail.com</p>
+                <button class="px-[18px] py-[9px] bg-white text-[#ff5252] border-[1.5px] border-[#ff5252] rounded-lg text-sm font-medium cursor-pointer transition hover:bg-[#ff5252] hover:text-white" onclick="showInviteModal()"><i class="fas fa-user-plus"></i> Invite</button>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="grid gap-[25px]" style="grid-template-columns: 1fr 400px;">
+            <!-- LEFT: TO-DO SECTION -->
+            <div class="bg-white p-[25px] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-2 text-[17px] font-semibold text-[#333]">
+                        <i class="far fa-circle text-[#ff7a7a]"></i>
+                        <span>To-Do</span>
+                    </div>
+                    <button class="bg-transparent border-none text-[#ff7a7a] text-sm font-medium cursor-pointer transition hover:text-[#ff5252]" onclick="showAddTaskModal()">+ Add task</button>
+                </div>
+
+                <p class="text-[13px] text-[#666] mb-[18px]">20 June <span class="text-[#999]">- Today</span></p>
+
+                <!-- TASK CARD 1 -->
+                <div class="flex items-start gap-[15px] p-[18px] border border-[#e8eaed] rounded-xl mb-3 relative transition hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <div class="w-[42px] h-[42px] rounded-[10px] flex items-center justify-center text-white text-lg shrink-0 bg-[#ff5252]">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-[15px] font-semibold text-[#333] mb-1.5">Attend Nischal's Birthday Party</h4>
+                        <p class="text-[13px] text-[#666] leading-relaxed mb-2.5">Buy gifts on the way and pick up cake from the bakery. (6 PM | Fresh Elements)</p>
+                        <div class="flex gap-3 text-[11px]">
+                            <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-600">Priority: Moderate</span>
+                            <span class="px-2 py-0.5 rounded text-[#999]">Status: Not Started</span>
+                            <span class="px-2 py-0.5 rounded text-[#999]">Created on 20/06/2023</span>
+                        </div>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=100&h=100&fit=crop" alt="Task" class="w-[70px] h-[70px] rounded-[10px] object-cover shrink-0">
+                    <button class="absolute top-[15px] right-[15px] bg-transparent border-none text-[#ccc] cursor-pointer text-sm transition hover:text-[#666]"><i class="fas fa-ellipsis-v"></i></button>
+                </div>
+
+                <!-- TASK CARD 2 -->
+                <div class="flex items-start gap-[15px] p-[18px] border border-[#e8eaed] rounded-xl mb-3 relative transition hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <div class="w-[42px] h-[42px] rounded-[10px] flex items-center justify-center text-white text-lg shrink-0 bg-blue-500">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-[15px] font-semibold text-[#333] mb-1.5">Landing Page Design for TravelDays</h4>
+                        <p class="text-[13px] text-[#666] leading-relaxed mb-2.5">Get the work done by EOD and discuss with client before leaving. (4 PM | Meeting Room)</p>
+                        <div class="flex gap-3 text-[11px]">
+                            <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-600">Priority: Moderate</span>
+                            <span class="px-2 py-0.5 rounded text-blue-500">Status: In Progress</span>
+                            <span class="px-2 py-0.5 rounded text-[#999]">Created on 20/06/2023</span>
+                        </div>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=100&h=100&fit=crop" alt="Task" class="w-[70px] h-[70px] rounded-[10px] object-cover shrink-0">
+                    <button class="absolute top-[15px] right-[15px] bg-transparent border-none text-[#ccc] cursor-pointer text-sm transition hover:text-[#666]"><i class="fas fa-ellipsis-v"></i></button>
+                </div>
+
+                <!-- TASK CARD 3 -->
+                <div class="flex items-start gap-[15px] p-[18px] border border-[#e8eaed] rounded-xl mb-3 relative transition hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <div class="w-[42px] h-[42px] rounded-[10px] flex items-center justify-center text-white text-lg shrink-0 bg-blue-500">
+                        <i class="fas fa-presentation"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-[15px] font-semibold text-[#333] mb-1.5">Presentation on Final Product</h4>
+                        <p class="text-[13px] text-[#666] leading-relaxed mb-2.5">Make sure everything is functioning flawlessly, rehearse the presentation and dummy test it on Friday.</p>
+                        <div class="flex gap-3 text-[11px]">
+                            <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-600">Priority: Moderate</span>
+                            <span class="px-2 py-0.5 rounded text-blue-500">Status: In Progress</span>
+                            <span class="px-2 py-0.5 rounded text-[#999]">Created on 18/06/2023</span>
+                        </div>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=100&h=100&fit=crop" alt="Task" class="w-[70px] h-[70px] rounded-[10px] object-cover shrink-0">
+                    <button class="absolute top-[15px] right-[15px] bg-transparent border-none text-[#ccc] cursor-pointer text-sm transition hover:text-[#666]"><i class="fas fa-ellipsis-v"></i></button>
+                </div>
             </div>
 
-            <nav class="sidebar-nav">
-                <a href="{{ route('dashboard') }}" class="nav-link active">
-                    <i class="fas fa-th-large"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="{{ route('vital_task') }}" class="nav-link">
-                    <i class="fas fa-bolt"></i>
-                    <span>Vital Task</span>
-                </a>
-                <a href="{{ route('my_task') }}" class="nav-link">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>My Task</span>
-                </a>
-                <a href="{{ route('task_kategori.index') }}" class="nav-link">
-                    <i class="fas fa-list"></i>
-                    <span>Task Categories</span>
-                </a>
-                <a href="{{ route('profile') }}" class="nav-link">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-question-circle"></i>
-                    <span>Help</span>
-                </a>
-            </nav>
-
-            <button class="logout-button" onclick="showLogoutModal()">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </button>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <!-- TOP HEADER -->
-            <header class="top-header">
-                <h1 class="page-title"><span class="title-red">Dash</span><span class="title-black">board</span></h1>
-                
-                <div class="search-container">
-                    <input type="text" placeholder="Search your task here..." class="search-input">
-                </div>
-
-                <div class="header-actions">
-                    <button class="action-btn"><i class="fas fa-search"></i></button>
-                    <button class="action-btn"><i class="fas fa-bell"></i></button>
-                    <button class="action-btn"><i class="fas fa-envelope"></i></button>
-                    <div class="date-display">
-                        <span class="day-name">{{ now()->translatedFormat('l') }}</span>
-                        <span class="date-value">{{ now()->format('d/m/Y') }}</span>
+            <!-- RIGHT: STATUS & COMPLETED -->
+            <div class="flex flex-col gap-5">
+                <!-- TASK STATUS -->
+                <div class="bg-white p-[22px] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+                    <div class="flex items-center gap-2 text-base font-semibold text-[#333] mb-5">
+                        <i class="fas fa-chart-pie text-[#ff7a7a]"></i>
+                        <span>Task Status</span>
                     </div>
-                </div>
-            </header>
-
-            <!-- CONTENT AREA -->
-            <div class="content-wrapper">
-                <!-- WELCOME SECTION -->
-                <div class="welcome-bar">
-                    <h2 class="welcome-text">Welcome back, Sundar <span class="wave">👋</span></h2>
-                    <div class="team-section">
-                        <div class="avatars">
-                            <div class="avatar" style="background: #667eea;">JD</div>
-                            <div class="avatar" style="background: #f093fb;">JS</div>
-                            <div class="avatar" style="background: #4facfe;">BW</div>
-                            <div class="avatar" style="background: #43e97b;">AB</div>
-                            <div class="avatar" style="background: #fa709a;">MD</div>
+                    <div class="grid grid-cols-3 gap-[15px]">
+                        <div class="text-center">
+                            <svg class="-rotate-90" width="100" height="100">
+                                <circle class="fill-none stroke-gray-200" stroke-width="8" cx="50" cy="50" r="40"></circle>
+                                <circle class="fill-none [stroke-linecap:round] transition-[stroke-dashoffset] duration-1000 stroke-emerald-500" stroke-width="8" cx="50" cy="50" r="40"
+                                    stroke-dasharray="251.2" stroke-dashoffset="40"></circle>
+                                <text x="50" y="55" class="text-lg font-bold fill-[#333] rotate-90" style="transform-origin:center;">84%</text>
+                            </svg>
+                            <p class="mt-2 text-xs text-emerald-500">● Completed</p>
                         </div>
-                        <button class="invite-btn" onclick="showInviteModal()"><i class="fas fa-user-plus"></i> Invite</button>
+                        <div class="text-center">
+                            <svg class="-rotate-90" width="100" height="100">
+                                <circle class="fill-none stroke-gray-200" stroke-width="8" cx="50" cy="50" r="40"></circle>
+                                <circle class="fill-none [stroke-linecap:round] transition-[stroke-dashoffset] duration-1000 stroke-blue-500" stroke-width="8" cx="50" cy="50" r="40"
+                                    stroke-dasharray="251.2" stroke-dashoffset="135"></circle>
+                                <text x="50" y="55" class="text-lg font-bold fill-[#333] rotate-90" style="transform-origin:center;">46%</text>
+                            </svg>
+                            <p class="mt-2 text-xs text-blue-500">● In Progress</p>
+                        </div>
+                        <div class="text-center">
+                            <svg class="-rotate-90" width="100" height="100">
+                                <circle class="fill-none stroke-gray-200" stroke-width="8" cx="50" cy="50" r="40"></circle>
+                                <circle class="fill-none [stroke-linecap:round] transition-[stroke-dashoffset] duration-1000 stroke-[#ff5252]" stroke-width="8" cx="50" cy="50" r="40"
+                                    stroke-dasharray="251.2" stroke-dashoffset="218"></circle>
+                                <text x="50" y="55" class="text-lg font-bold fill-[#333] rotate-90" style="transform-origin:center;">13%</text>
+                            </svg>
+                            <p class="mt-2 text-xs text-[#ff5252]">● Not Started</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- MAIN GRID -->
-                <div class="main-grid">
-                    <!-- LEFT: TO-DO SECTION -->
-                    <div class="todo-container">
-                        <div class="section-header">
-                            <div class="section-title">
-                                <i class="far fa-circle"></i>
-                                <span>To-Do</span>
-                            </div>
-                            <button class="add-btn" onclick="showAddTaskModal()">+ Add task</button>
-                        </div>
-
-                        <p class="date-label">20 June <span class="today">- Today</span></p>
-
-                        <!-- TASK CARD 1 -->
-                        <div class="task-card">
-                            <div class="task-icon red">
-                                <i class="fas fa-birthday-cake"></i>
-                            </div>
-                            <div class="task-body">
-                                <h4 class="task-title">Attend Nischal's Birthday Party</h4>
-                                <p class="task-desc">Buy gifts on the way and pick up cake from the bakery. (6 PM | Fresh Elements)</p>
-                                <div class="task-meta">
-                                    <span class="priority moderate">Priority: Moderate</span>
-                                    <span class="status not-started">Status: Not Started</span>
-                                    <span class="created">Created on 20/06/2023</span>
-                                </div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=100&h=100&fit=crop" alt="Task" class="task-img">
-                            <button class="task-menu"><i class="fas fa-ellipsis-v"></i></button>
-                        </div>
-
-                        <!-- TASK CARD 2 -->
-                        <div class="task-card">
-                            <div class="task-icon blue">
-                                <i class="fas fa-plane"></i>
-                            </div>
-                            <div class="task-body">
-                                <h4 class="task-title">Landing Page Design for TravelDays</h4>
-                                <p class="task-desc">Get the work done by EOD and discuss with client before leaving. (4 PM | Meeting Room)</p>
-                                <div class="task-meta">
-                                    <span class="priority moderate">Priority: Moderate</span>
-                                    <span class="status in-progress">Status: In Progress</span>
-                                    <span class="created">Created on 20/06/2023</span>
-                                </div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=100&h=100&fit=crop" alt="Task" class="task-img">
-                            <button class="task-menu"><i class="fas fa-ellipsis-v"></i></button>
-                        </div>
-
-                        <!-- TASK CARD 3 -->
-                        <div class="task-card">
-                            <div class="task-icon blue">
-                                <i class="fas fa-presentation"></i>
-                            </div>
-                            <div class="task-body">
-                                <h4 class="task-title">Presentation on Final Product</h4>
-                                <p class="task-desc">Make sure everything is functioning flawlessly, rehearse the presentation and dummy test it on Friday.</p>
-                                <div class="task-meta">
-                                    <span class="priority moderate">Priority: Moderate</span>
-                                    <span class="status in-progress">Status: In Progress</span>
-                                    <span class="created">Created on 18/06/2023</span>
-                                </div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=100&h=100&fit=crop" alt="Task" class="task-img">
-                            <button class="task-menu"><i class="fas fa-ellipsis-v"></i></button>
-                        </div>
+                <!-- COMPLETED TASK -->
+                <div class="bg-white p-[22px] rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+                    <div class="flex items-center gap-2 text-base font-semibold text-[#333] mb-5">
+                        <i class="fas fa-check-circle text-[#ff7a7a]"></i>
+                        <span>Completed Task</span>
                     </div>
 
-                    <!-- RIGHT: STATUS & COMPLETED -->
-                    <div class="right-sidebar">
-                        <!-- TASK STATUS -->
-                        <div class="status-box">
-                            <div class="box-header">
-                                <i class="fas fa-chart-pie"></i>
-                                <span>Task Status</span>
-                            </div>
-                            <div class="progress-row">
-                                <div class="progress-item">
-                                    <svg class="progress-ring" width="100" height="100">
-                                        <circle class="progress-bg" cx="50" cy="50" r="40"></circle>
-                                        <circle class="progress-bar green" cx="50" cy="50" r="40" 
-                                            stroke-dasharray="251.2" stroke-dashoffset="40"></circle>
-                                        <text x="50" y="55" class="progress-text">84%</text>
-                                    </svg>
-                                    <p class="progress-label green">● Completed</p>
-                                </div>
-                                <div class="progress-item">
-                                    <svg class="progress-ring" width="100" height="100">
-                                        <circle class="progress-bg" cx="50" cy="50" r="40"></circle>
-                                        <circle class="progress-bar blue" cx="50" cy="50" r="40" 
-                                            stroke-dasharray="251.2" stroke-dashoffset="135"></circle>
-                                        <text x="50" y="55" class="progress-text">46%</text>
-                                    </svg>
-                                    <p class="progress-label blue">● In Progress</p>
-                                </div>
-                                <div class="progress-item">
-                                    <svg class="progress-ring" width="100" height="100">
-                                        <circle class="progress-bg" cx="50" cy="50" r="40"></circle>
-                                        <circle class="progress-bar red" cx="50" cy="50" r="40" 
-                                            stroke-dasharray="251.2" stroke-dashoffset="218"></circle>
-                                        <text x="50" y="55" class="progress-text">13%</text>
-                                    </svg>
-                                    <p class="progress-label red">● Not Started</p>
-                                </div>
-                            </div>
+                    <div class="flex items-start gap-3 p-[15px] border border-[#e8eaed] rounded-[10px] mb-2.5 relative">
+                        <i class="fas fa-check-circle text-emerald-500 text-xl shrink-0"></i>
+                        <div class="flex-1">
+                            <h5 class="text-sm font-semibold text-[#333] mb-1">Walk the dog</h5>
+                            <p class="text-xs text-[#666] mb-1.5">Take the dog to the park and bring treats as well.</p>
+                            <p class="text-[11px] text-[#666]">Status: <span class="text-emerald-500 font-semibold">Completed</span></p>
+                            <p class="text-[11px] text-[#999]">Completed 2 days ago</p>
                         </div>
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=80&h=80&fit=crop" alt="Task" class="w-[60px] h-[60px] rounded-lg object-cover shrink-0">
+                        <button class="absolute top-3 right-3 bg-transparent border-none text-[#ccc] cursor-pointer text-xs"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
 
-                        <!-- COMPLETED TASK -->
-                        <div class="completed-box">
-                            <div class="box-header">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Completed Task</span>
-                            </div>
-
-                            <div class="completed-card">
-                                <i class="fas fa-check-circle check-icon"></i>
-                                <div class="completed-info">
-                                    <h5 class="completed-title">Walk the dog</h5>
-                                    <p class="completed-desc">Take the dog to the park and bring treats as well.</p>
-                                    <p class="completed-status">Status: <span class="green">Completed</span></p>
-                                    <p class="completed-time">Completed 2 days ago</p>
-                                </div>
-                                <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=80&h=80&fit=crop" alt="Task" class="completed-img">
-                                <button class="completed-menu"><i class="fas fa-ellipsis-v"></i></button>
-                            </div>
-
-                            <div class="completed-card">
-                                <i class="fas fa-check-circle check-icon"></i>
-                                <div class="completed-info">
-                                    <h5 class="completed-title">Conduct meeting</h5>
-                                    <p class="completed-desc">Meet with the client and finalize requirements.</p>
-                                    <p class="completed-status">Status: <span class="green">Completed</span></p>
-                                    <p class="completed-time">Completed 2 days ago</p>
-                                </div>
-                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=80&h=80&fit=crop" alt="Task" class="completed-img">
-                                <button class="completed-menu"><i class="fas fa-ellipsis-v"></i></button>
-                            </div>
+                    <div class="flex items-start gap-3 p-[15px] border border-[#e8eaed] rounded-[10px] relative">
+                        <i class="fas fa-check-circle text-emerald-500 text-xl shrink-0"></i>
+                        <div class="flex-1">
+                            <h5 class="text-sm font-semibold text-[#333] mb-1">Conduct meeting</h5>
+                            <p class="text-xs text-[#666] mb-1.5">Meet with the client and finalize requirements.</p>
+                            <p class="text-[11px] text-[#666]">Status: <span class="text-emerald-500 font-semibold">Completed</span></p>
+                            <p class="text-[11px] text-[#999]">Completed 2 days ago</p>
                         </div>
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=80&h=80&fit=crop" alt="Task" class="w-[60px] h-[60px] rounded-lg object-cover shrink-0">
+                        <button class="absolute top-3 right-3 bg-transparent border-none text-[#ccc] cursor-pointer text-xs"><i class="fas fa-ellipsis-v"></i></button>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
-
-    <!-- LOGOUT MODAL -->
-    <div id="logoutModal" class="modal">
-        <div class="modal-overlay" onclick="hideLogoutModal()"></div>
-        <div class="modal-box">
-            <h3>Are You Sure?</h3>
-            <p>You will be logged out of the current account.</p>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <div class="modal-actions">
-                    <button type="submit" class="btn-yes">Yes, Logout</button>
-                    <button type="button" class="btn-no" onclick="hideLogoutModal()">Cancel</button>
-                </div>
-            </form>
         </div>
     </div>
+@endsection
 
+@push('modals')
     <!-- ADD TASK MODAL -->
-    <div id="addTaskModal" class="modal">
-        <div class="modal-overlay" onclick="hideAddTaskModal()"></div>
-        <div class="add-task-modal-box">
-            <div class="modal-header">
-                <h3>Add New Task</h3>
-                <button class="modal-close-btn" onclick="hideAddTaskModal()">×</button>
+    <div id="addTaskModal" class="hidden fixed inset-0 bg-black/50 z-[1000] items-center justify-center">
+        <div class="absolute inset-0" onclick="hideAddTaskModal()"></div>
+        <div class="relative bg-white p-0 rounded-2xl max-w-[600px] w-[90%] max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center px-[30px] py-[25px] border-b border-gray-200">
+                <h3 class="text-[22px] text-[#333] m-0">Add New Task</h3>
+                <button class="bg-transparent border-none text-3xl text-[#999] cursor-pointer leading-none p-0 w-8 h-8 flex items-center justify-center transition hover:text-[#666]" onclick="hideAddTaskModal()">×</button>
             </div>
-            
-            <form class="add-task-form">
-                <div class="form-group">
-                    <label>Task Title <span class="required">*</span></label>
-                    <input type="text" placeholder="Enter task title" class="form-input" required>
+
+            <form class="p-[30px]">
+                <div class="mb-5">
+                    <label class="block text-sm font-semibold text-[#333] mb-2">Task Title <span class="text-[#ff5252]">*</span></label>
+                    <input type="text" placeholder="Enter task title" class="w-full px-4 py-3 border border-gray-300 rounded-[10px] text-sm transition outline-none focus:border-[#ff5252] focus:shadow-[0_0_0_3px_rgba(255,82,82,0.1)]" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea placeholder="Enter task description" class="form-textarea" rows="3"></textarea>
+                <div class="mb-5">
+                    <label class="block text-sm font-semibold text-[#333] mb-2">Description</label>
+                    <textarea placeholder="Enter task description" class="w-full px-4 py-3 border border-gray-300 rounded-[10px] text-sm transition outline-none resize-y min-h-[80px] focus:border-[#ff5252] focus:shadow-[0_0_0_3px_rgba(255,82,82,0.1)]" rows="3"></textarea>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Priority <span class="required">*</span></label>
-                        <select class="form-select" required>
+                <div class="grid grid-cols-2 gap-[15px]">
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-[#333] mb-2">Priority <span class="text-[#ff5252]">*</span></label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-[10px] text-sm transition outline-none bg-white cursor-pointer focus:border-[#ff5252] focus:shadow-[0_0_0_3px_rgba(255,82,82,0.1)]" required>
                             <option value="">Select Priority</option>
                             <option value="low">Low</option>
                             <option value="moderate">Moderate</option>
@@ -284,9 +196,9 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Status <span class="required">*</span></label>
-                        <select class="form-select" required>
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-[#333] mb-2">Status <span class="text-[#ff5252]">*</span></label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-[10px] text-sm transition outline-none bg-white cursor-pointer focus:border-[#ff5252] focus:shadow-[0_0_0_3px_rgba(255,82,82,0.1)]" required>
                             <option value="">Select Status</option>
                             <option value="not-started" selected>Not Started</option>
                             <option value="in-progress">In Progress</option>
@@ -295,15 +207,15 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Due Date</label>
-                        <input type="date" class="form-input">
+                <div class="grid grid-cols-2 gap-[15px]">
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-[#333] mb-2">Due Date</label>
+                        <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-[10px] text-sm transition outline-none focus:border-[#ff5252] focus:shadow-[0_0_0_3px_rgba(255,82,82,0.1)]">
                     </div>
 
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select class="form-select">
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold text-[#333] mb-2">Category</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-[10px] text-sm transition outline-none bg-white cursor-pointer focus:border-[#ff5252] focus:shadow-[0_0_0_3px_rgba(255,82,82,0.1)]">
                             <option value="">Select Category</option>
                             <option value="personal">Personal</option>
                             <option value="work">Work</option>
@@ -313,88 +225,88 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Attach Image (Optional)</label>
-                    <input type="file" accept="image/*" class="form-file">
+                <div class="mb-5">
+                    <label class="block text-sm font-semibold text-[#333] mb-2">Attach Image (Optional)</label>
+                    <input type="file" accept="image/*" class="w-full px-4 py-2.5 border border-gray-300 rounded-[10px] text-sm transition cursor-pointer">
                 </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="btn-submit">Create Task</button>
-                    <button type="button" class="btn-cancel" onclick="hideAddTaskModal()">Cancel</button>
+                <div class="flex gap-3 justify-end mt-[30px] pt-5 border-t border-gray-200">
+                    <button type="submit" class="px-[30px] py-3 border-none rounded-[10px] text-[15px] font-semibold cursor-pointer transition bg-[#ff5252] text-white hover:bg-[#ff3838] hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(255,82,82,0.3)]">Create Task</button>
+                    <button type="button" class="px-[30px] py-3 border-none rounded-[10px] text-[15px] font-semibold cursor-pointer transition bg-gray-100 text-[#666] hover:bg-gray-200" onclick="hideAddTaskModal()">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- INVITE MEMBER MODAL -->
-    <div id="inviteModal" class="modal">
-        <div class="modal-overlay" onclick="hideInviteModal()"></div>
-        <div class="invite-modal-box">
-            <div class="invite-modal-header">
-                <h3>Send an invite to a new member</h3>
-                <button class="go-back-btn" onclick="hideInviteModal()">Go Back</button>
+    <div id="inviteModal" class="hidden fixed inset-0 bg-black/50 z-[1000] items-center justify-center">
+        <div class="absolute inset-0" onclick="hideInviteModal()"></div>
+        <div class="relative bg-white rounded-2xl max-w-[700px] w-[90%] max-h-[85vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center px-[30px] py-[25px] border-b-2 border-[#ff5252]">
+                <h3 class="text-xl text-[#333] m-0 font-semibold">Send an invite to a new member</h3>
+                <button class="bg-transparent border-none text-[#666] text-sm font-semibold cursor-pointer underline px-2.5 py-1 transition hover:text-[#ff5252]" onclick="hideInviteModal()">Go Back</button>
             </div>
 
-            <div class="invite-modal-content">
+            <div class="p-[30px] overflow-y-auto flex-1">
                 <!-- EMAIL INPUT -->
-                <div class="invite-email-section">
-                    <label class="invite-label">Email</label>
-                    <div class="invite-email-input-group">
-                        <input type="email" placeholder="newrajgurung99@gmail.com" class="invite-email-input">
-                        <button class="send-invite-btn">Send Invite</button>
+                <div class="mb-[30px]">
+                    <label class="block text-[15px] font-semibold text-[#333] mb-2.5">Email</label>
+                    <div class="flex gap-2.5">
+                        <input type="email" placeholder="newrajgurung99@gmail.com" class="flex-1 px-4 py-3 border border-gray-300 rounded-[10px] text-sm outline-none focus:border-[#ff5252]">
+                        <button class="px-7 py-3 bg-[#ff5252] text-white border-none rounded-[10px] text-sm font-semibold cursor-pointer whitespace-nowrap transition hover:bg-[#ff3838]">Send Invite</button>
                     </div>
                 </div>
 
                 <!-- MEMBERS LIST -->
-                <div class="members-section">
-                    <h4 class="members-title">Members</h4>
-                    
-                    <div class="member-item">
-                        <img src="https://ui-avatars.com/api/?name=Upashna+Gurung&background=667eea&color=fff" alt="Member" class="member-avatar">
-                        <div class="member-info">
-                            <div class="member-name">Upashna Gurung</div>
-                            <div class="member-email">upashnag931@gmail.com</div>
+                <div class="mb-[30px]">
+                    <h4 class="text-base font-semibold text-[#333] mb-[15px]">Members</h4>
+
+                    <div class="flex items-center gap-[15px] p-[15px] border border-gray-200 rounded-xl mb-3 transition hover:bg-gray-50 hover:border-gray-300">
+                        <img src="https://ui-avatars.com/api/?name=Upashna+Gurung&background=667eea&color=fff" alt="Member" class="w-12 h-12 rounded-full object-cover shrink-0">
+                        <div class="flex-1">
+                            <div class="text-[15px] font-semibold text-[#333] mb-0.5">Upashna Gurung</div>
+                            <div class="text-[13px] text-[#666]">upashnag931@gmail.com</div>
                         </div>
-                        <select class="member-role-select">
+                        <select class="pl-3 pr-8 py-2 border border-gray-300 rounded-lg text-[13px] font-medium cursor-pointer bg-white text-[#333]">
                             <option value="edit" selected>Can edit</option>
                             <option value="view">Can view</option>
                             <option value="owner">Owner</option>
                         </select>
                     </div>
 
-                    <div class="member-item">
-                        <img src="https://ui-avatars.com/api/?name=Jeremy+Lee&background=f093fb&color=fff" alt="Member" class="member-avatar">
-                        <div class="member-info">
-                            <div class="member-name">Jeremy Lee</div>
-                            <div class="member-email">jeremylee199@gmail.com</div>
+                    <div class="flex items-center gap-[15px] p-[15px] border border-gray-200 rounded-xl mb-3 transition hover:bg-gray-50 hover:border-gray-300">
+                        <img src="https://ui-avatars.com/api/?name=Jeremy+Lee&background=f093fb&color=fff" alt="Member" class="w-12 h-12 rounded-full object-cover shrink-0">
+                        <div class="flex-1">
+                            <div class="text-[15px] font-semibold text-[#333] mb-0.5">Jeremy Lee</div>
+                            <div class="text-[13px] text-[#666]">jeremylee199@gmail.com</div>
                         </div>
-                        <select class="member-role-select">
+                        <select class="pl-3 pr-8 py-2 border border-gray-300 rounded-lg text-[13px] font-medium cursor-pointer bg-white text-[#333]">
                             <option value="edit" selected>Can edit</option>
                             <option value="view">Can view</option>
                             <option value="owner">Owner</option>
                         </select>
                     </div>
 
-                    <div class="member-item">
-                        <img src="https://ui-avatars.com/api/?name=Thomas+Park&background=4facfe&color=fff" alt="Member" class="member-avatar">
-                        <div class="member-info">
-                            <div class="member-name">Thomas Park</div>
-                            <div class="member-email">parkho234@gmail.com</div>
+                    <div class="flex items-center gap-[15px] p-[15px] border border-gray-200 rounded-xl mb-3 transition hover:bg-gray-50 hover:border-gray-300">
+                        <img src="https://ui-avatars.com/api/?name=Thomas+Park&background=4facfe&color=fff" alt="Member" class="w-12 h-12 rounded-full object-cover shrink-0">
+                        <div class="flex-1">
+                            <div class="text-[15px] font-semibold text-[#333] mb-0.5">Thomas Park</div>
+                            <div class="text-[13px] text-[#666]">parkho234@gmail.com</div>
                         </div>
-                        <select class="member-role-select">
+                        <select class="pl-3 pr-8 py-2 border border-gray-300 rounded-lg text-[13px] font-medium cursor-pointer bg-white text-[#333]">
                             <option value="owner" selected>Owner</option>
                             <option value="edit">Can edit</option>
                             <option value="view">Can view</option>
                         </select>
                     </div>
 
-                    <div class="member-item">
-                        <img src="https://ui-avatars.com/api/?name=Rachel+Takahasi&background=43e97b&color=fff" alt="Member" class="member-avatar">
-                        <div class="member-info">
-                            <div class="member-name">Rachel Takahasi</div>
-                            <div class="member-email">takahasiraa23@gmail.com</div>
+                    <div class="flex items-center gap-[15px] p-[15px] border border-gray-200 rounded-xl mb-3 transition hover:bg-gray-50 hover:border-gray-300">
+                        <img src="https://ui-avatars.com/api/?name=Rachel+Takahasi&background=43e97b&color=fff" alt="Member" class="w-12 h-12 rounded-full object-cover shrink-0">
+                        <div class="flex-1">
+                            <div class="text-[15px] font-semibold text-[#333] mb-0.5">Rachel Takahasi</div>
+                            <div class="text-[13px] text-[#666]">takahasiraa23@gmail.com</div>
                         </div>
-                        <select class="member-role-select">
+                        <select class="pl-3 pr-8 py-2 border border-gray-300 rounded-lg text-[13px] font-medium cursor-pointer bg-white text-[#333]">
                             <option value="edit" selected>Can edit</option>
                             <option value="view">Can view</option>
                             <option value="owner">Owner</option>
@@ -403,52 +315,47 @@
                 </div>
 
                 <!-- PROJECT LINK -->
-                <div class="project-link-section">
-                    <label class="invite-label">Project Link</label>
-                    <div class="project-link-input-group">
-                        <input type="text" value="https://chandnimarestaurant/home.com/4s4060y29" class="project-link-input" readonly>
-                        <button class="copy-link-btn">Copy Link</button>
+                <div class="pt-5 border-t border-gray-200">
+                    <label class="block text-[15px] font-semibold text-[#333] mb-2.5">Project Link</label>
+                    <div class="flex gap-2.5">
+                        <input type="text" id="projectLinkInput" value="https://chandnimarestaurant/home.com/4s4060y29" class="flex-1 px-4 py-3 border border-gray-300 rounded-[10px] text-[13px] bg-gray-50 text-[#666]" readonly>
+                        <button id="copyLinkBtn" class="px-7 py-3 bg-[#ff5252] text-white border-none rounded-[10px] text-sm font-semibold cursor-pointer whitespace-nowrap transition hover:bg-[#ff3838]">Copy Link</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endpush
 
-    <script>
-        function showLogoutModal() {
-            document.getElementById('logoutModal').style.display = 'flex';
+@push('scripts')
+<script>
+    function showAddTaskModal() {
+        document.getElementById('addTaskModal').style.display = 'flex';
+    }
+    function hideAddTaskModal() {
+        document.getElementById('addTaskModal').style.display = 'none';
+    }
+    function showInviteModal() {
+        document.getElementById('inviteModal').style.display = 'flex';
+    }
+    function hideInviteModal() {
+        document.getElementById('inviteModal').style.display = 'none';
+    }
+
+    // Copy link functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyBtn = document.getElementById('copyLinkBtn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function() {
+                const input = document.getElementById('projectLinkInput');
+                input.select();
+                document.execCommand('copy');
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = 'Copy Link';
+                }, 2000);
+            });
         }
-        function hideLogoutModal() {
-            document.getElementById('logoutModal').style.display = 'none';
-        }
-        function showAddTaskModal() {
-            document.getElementById('addTaskModal').style.display = 'flex';
-        }
-        function hideAddTaskModal() {
-            document.getElementById('addTaskModal').style.display = 'none';
-        }
-        function showInviteModal() {
-            document.getElementById('inviteModal').style.display = 'flex';
-        }
-        function hideInviteModal() {
-            document.getElementById('inviteModal').style.display = 'none';
-        }
-        
-        // Copy link functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const copyBtn = document.querySelector('.copy-link-btn');
-            if (copyBtn) {
-                copyBtn.addEventListener('click', function() {
-                    const input = document.querySelector('.project-link-input');
-                    input.select();
-                    document.execCommand('copy');
-                    this.textContent = 'Copied!';
-                    setTimeout(() => {
-                        this.textContent = 'Copy Link';
-                    }, 2000);
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+    });
+</script>
+@endpush

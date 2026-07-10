@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- ELEMEN ---
-    const btnAdd = document.querySelector('.btn-add');
+    const btnAdd = document.getElementById('btn-open-task-modal');
     const modalOverlay = document.getElementById('modal-overlay');
     const btnClose = document.getElementById('modal-close');
     const btnSimpan = document.getElementById('btn-simpan');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const calendarDays = document.getElementById('calendar-days');
     const calendarMonthYear = document.getElementById('calendar-month-year');
     
-    const searchInput = document.querySelector('.search-bar input');
+    const searchInput = document.querySelector('.search-input');
 
     let navDate = new Date(); 
     let tasks = [];
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const localData = JSON.parse(sessionStorage.getItem('mock_tasks'));
         
         // Deteksi halaman berdasarkan teks judul di H1
-        const pageTitle = document.querySelector('.content-header h1').innerText;
+        const pageTitle = document.getElementById('page-title').innerText;
 
         // Jalankan filter client-side mirip logical backend php kemarin
         if (pageTitle.includes('Vital')) {
@@ -158,66 +158,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- FUNGSI RENDER LIST TUGAS ---
     function renderTaskList(tasksToRender = tasks) {
-        leftPanel.innerHTML = ''; 
-        
+        leftPanel.innerHTML = '';
+
         if (tasksToRender.length === 0) {
             leftPanel.innerHTML = '<div style="width:100%;text-align:center;color:#aaa;margin-top:50px;">Tugas tidak ditemukan</div>';
             return;
         }
-        
+
         tasksToRender.forEach(task => {
-            let dotColor = 'dot-normal'; 
-            let textPriorityColor = '#ffca28'; 
+            let dotColor = '#ffca28';
 
             if (task.priority === 'Extreme') {
-                dotColor = 'dot-extreme';
-                textPriorityColor = '#ff5252';
+                dotColor = '#ff5252';
             } else if (task.priority === 'Low') {
-                dotColor = 'dot-low';
-                textPriorityColor = '#81c784';
-            } else {
-                dotColor = 'dot-normal';
-                textPriorityColor = '#ffca28';
+                dotColor = '#81c784';
             }
 
             const statusColor = getStatusColor(task.status);
 
             const taskCard = document.createElement('div');
-            taskCard.className = 'task-item';
+            taskCard.className = 'w-full bg-white border border-[#eaeaea] rounded-xl px-5 py-[15px] mb-[15px] flex items-center cursor-pointer transition text-left hover:border-[#ff6b6b] hover:shadow-[0_5px_15px_rgba(255,107,107,0.2)] hover:-translate-y-0.5';
             taskCard.innerHTML = `
-                <div class="priority-dot ${dotColor}"></div>
-                <div class="task-info">
-                    <h4>${task.title}</h4>
-                    <p>Priority: <span style="color: ${textPriorityColor}; font-weight: bold;">${task.priority}</span> &nbsp;|&nbsp; Status: <span style="color: ${statusColor}; font-weight: bold;">${task.status}</span></p>
+                <div class="w-[15px] h-[15px] rounded-full mr-[15px] shrink-0" style="background-color:${dotColor}"></div>
+                <div class="flex-1">
+                    <h4 class="text-base text-[#333] mb-1.5">${task.title}</h4>
+                    <p class="text-xs text-[#a0a0a0]">Priority: <span style="color: ${dotColor}; font-weight: bold;">${task.priority}</span> &nbsp;|&nbsp; Status: <span style="color: ${statusColor}; font-weight: bold;">${task.status}</span></p>
                 </div>
-                <img src="${task.image}" class="task-thumbnail" alt="Thumb">
+                <img src="${task.image}" class="w-[60px] h-[60px] rounded-lg object-cover ml-auto" alt="Thumb">
             `;
 
             taskCard.addEventListener('click', () => showDetail(task));
             leftPanel.appendChild(taskCard);
         });
-    } 
+    }
 
     // --- FUNGSI DETAIL DENGAN TOMBOL EDIT & HAPUS ---
     function showDetail(task) {
         const statusColor = getStatusColor(task.status);
-        const textPriorityColor = task.priority === 'Extreme' ? 'red' : (task.priority === 'Low' ? '#81c784' : '#ffca28'); 
+        const textPriorityColor = task.priority === 'Extreme' ? 'red' : (task.priority === 'Low' ? '#81c784' : '#ffca28');
 
         rightPanel.innerHTML = `
-            <div class="detail-content" id="detail-box">
-                <img src="${task.image}" class="detail-banner" alt="Banner">
-                <h2>${task.title}</h2>
-                <p><strong>Priority:</strong> <span style="color: ${textPriorityColor}; font-weight: bold;">${task.priority}</span></p>
-                <p><strong>Status:</strong> <span id="view-status" style="color: ${statusColor}; font-weight: bold;">${task.status}</span></p>
-                <p><strong>Deadline:</strong> ${task.deadline || '-'}</p>
+            <div class="w-full text-left" id="detail-box">
+                <img src="${task.image}" class="w-full h-[180px] rounded-xl object-cover mb-5 shadow-[0_4px_10px_rgba(0,0,0,0.05)]" alt="Banner">
+                <h2 class="mb-5 text-[#333]">${task.title}</h2>
+                <p class="mb-2.5 text-sm leading-relaxed"><strong class="text-[#333]">Priority:</strong> <span style="color: ${textPriorityColor}; font-weight: bold;">${task.priority}</span></p>
+                <p class="mb-2.5 text-sm leading-relaxed"><strong class="text-[#333]">Status:</strong> <span id="view-status" style="color: ${statusColor}; font-weight: bold;">${task.status}</span></p>
+                <p class="mb-2.5 text-sm leading-relaxed"><strong class="text-[#333]">Deadline:</strong> ${task.deadline || '-'}</p>
                 <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                <p><strong>Description:</strong><br><span id="view-desc">${task.description || 'Tidak ada deskripsi.'}</span></p>
-                
-                <div class="task-actions" style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
-                    <button class="btn-action btn-edit" id="btn-edit-action" style="padding: 8px 15px; border-radius: 8px; border: none; cursor: pointer; background: #eaeaea;">
+                <p class="mb-2.5 text-sm leading-relaxed"><strong class="text-[#333]">Description:</strong><br><span id="view-desc">${task.description || 'Tidak ada deskripsi.'}</span></p>
+
+                <div class="flex gap-2.5 justify-end" id="task-actions" style="margin-top: 20px;">
+                    <button class="px-[15px] py-2 rounded-lg border-none cursor-pointer text-sm flex items-center gap-1.5 transition bg-[#eaeaea] text-[#333] hover:bg-[#ddd]" id="btn-edit-action">
                         <i class="fas fa-pencil-alt"></i> Edit
                     </button>
-                    <button class="btn-action btn-delete" id="btn-delete-action" style="padding: 8px 15px; border-radius: 8px; border: none; cursor: pointer; background: #ff5252; color: white;">
+                    <button class="px-[15px] py-2 rounded-lg border-none cursor-pointer text-sm flex items-center gap-1.5 transition bg-[#ff5252] text-white hover:bg-[#ff1744]" id="btn-delete-action">
                         <i class="fas fa-trash"></i> Hapus
                     </button>
                 </div>
@@ -247,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function enableEditMode(task) {
         const viewDesc = document.getElementById('view-desc');
         const viewStatus = document.getElementById('view-status');
-        const actions = document.querySelector('.task-actions');
+        const actions = document.getElementById('task-actions');
 
         viewDesc.innerHTML = `<textarea id="edit-desc" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; margin-top:5px; font-family:inherit;">${task.description}</textarea>`;
         viewStatus.innerHTML = `
@@ -256,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <option value="In Progress" ${task.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                 <option value="Completed" ${task.status === 'Completed' ? 'selected' : ''}>Completed</option>
             </select>`;
-        
+
         actions.innerHTML = `
             <button id="btn-save-update" style="padding: 8px 15px; border-radius: 8px; border: none; background: #2ecc71; color: white; cursor: pointer;">Simpan</button>
             <button id="btn-cancel-update" style="padding: 8px 15px; border-radius: 8px; border: none; background: #ccc; cursor: pointer;">Batal</button>`;
@@ -289,52 +283,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- FUNGSI KALENDER ---
+    const CALENDAR_DAY_BASE = 'aspect-square flex flex-col items-center justify-center rounded-lg text-sm font-medium transition relative';
+
     function renderCalendar() {
-        calendarDays.innerHTML = ''; 
-        const currentMonth = navDate.getMonth(); 
-        const currentYear = navDate.getFullYear(); 
+        calendarDays.innerHTML = '';
+        const currentMonth = navDate.getMonth();
+        const currentYear = navDate.getFullYear();
         const actualToday = new Date();
 
         const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         calendarMonthYear.innerText = `${monthNames[currentMonth]} ${currentYear}`;
 
-        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); 
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); 
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
         for (let i = 0; i < firstDayOfMonth; i++) {
             const emptyDiv = document.createElement('div');
-            emptyDiv.className = 'calendar-day empty';
+            emptyDiv.className = CALENDAR_DAY_BASE + ' cursor-default';
             calendarDays.appendChild(emptyDiv);
         }
 
         for (let i = 1; i <= daysInMonth; i++) {
             const dayDiv = document.createElement('div');
-            dayDiv.className = 'calendar-day';
+            const isToday = i === actualToday.getDate() && currentMonth === actualToday.getMonth() && currentYear === actualToday.getFullYear();
+            dayDiv.className = CALENDAR_DAY_BASE + ' cursor-pointer ' + (isToday ? 'bg-[#ff6b6b] text-white hover:bg-[#ff5252]' : 'text-[#333] hover:bg-[#f0f0f0]');
             dayDiv.innerText = i;
-
-            if (i === actualToday.getDate() && currentMonth === actualToday.getMonth() && currentYear === actualToday.getFullYear()) {
-                dayDiv.classList.add('today');
-            }
 
             const checkDateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
             const tasksOnThisDay = tasks.filter(t => t.deadline === checkDateStr);
-            
+
             if (tasksOnThisDay.length > 0) {
                 const indicator = document.createElement('div');
-                indicator.className = 'task-indicator';
-                
-                if(tasksOnThisDay.some(t => t.priority === 'Extreme')) {
-                    indicator.classList.add('extreme'); 
+                let dotColor = '#ffca28';
+                if (tasksOnThisDay.some(t => t.priority === 'Extreme')) {
+                    dotColor = '#ff5252';
                 } else if (tasksOnThisDay.every(t => t.priority === 'Low')) {
-                    indicator.style.backgroundColor = '#81c784'; 
+                    dotColor = '#81c784';
                 }
-
+                indicator.className = 'w-[5px] h-[5px] rounded-full absolute bottom-[5px]';
+                indicator.style.backgroundColor = isToday ? '#ffffff' : dotColor;
                 dayDiv.appendChild(indicator);
             }
 
             dayDiv.addEventListener('click', () => {
-                document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
-                dayDiv.classList.add('selected'); 
+                document.querySelectorAll('#calendar-days > div').forEach(d => d.classList.remove('border-2', 'border-[#ff6b6b]'));
+                dayDiv.classList.add('border-2', 'border-[#ff6b6b]');
                 showTasksForDate(checkDateStr, tasksOnThisDay);
             });
 
@@ -354,15 +347,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (tasksOnThisDay.length > 0) {
             tasksOnThisDay.forEach(t => {
-                let borderColor = '#ffca28'; 
+                let borderColor = '#ffca28';
                 if (t.priority === 'Extreme') {
-                    borderColor = '#ff5252'; 
+                    borderColor = '#ff5252';
                 } else if (t.priority === 'Low') {
-                    borderColor = '#81c784'; 
+                    borderColor = '#81c784';
                 }
 
                 previewList.innerHTML += `
-                    <div class="preview-item" style="padding:10px; border-radius:8px; background:#f9f9f9; margin-bottom:5px; border-left:4px solid ${borderColor}">
+                    <div class="text-[13px] text-left" style="padding:10px; border-radius:8px; background:#f9f9f9; margin-bottom:5px; border-left:4px solid ${borderColor}">
                         <div style="font-weight:bold;">${t.title}</div>
                         <div style="font-size:11px; color:#666;">${t.status} | Priority: <span style="color: ${borderColor}; font-weight: bold;">${t.priority}</span></div>
                     </div>`;
