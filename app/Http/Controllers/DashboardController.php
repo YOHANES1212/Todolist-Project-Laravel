@@ -23,7 +23,8 @@ class DashboardController extends Controller
 
         $completedTasks = Task::where('user_id', $user->id)
             ->whereHas('status', function ($query) {
-                $query->where('status_name', 'like', '%ompleted%');
+                $query->where('status_name', 'like', '%ompleted%')
+                    ->orWhere('status_name', 'like', '%Done%');
             })
             ->count();
 
@@ -35,7 +36,8 @@ class DashboardController extends Controller
 
         $notStartedTasks = Task::where('user_id', $user->id)
             ->whereHas('status', function ($query) {
-                $query->where('status_name', 'like', '%Not%');
+                $query->where('status_name', 'like', '%Not%')
+                    ->orWhere('status_name', 'like', '%Todo%');
             })
             ->count();
 
@@ -50,7 +52,8 @@ class DashboardController extends Controller
         $recentCompletedTasks = Task::where('user_id', $user->id)
             ->with('status', 'priority')
             ->whereHas('status', function ($query) {
-                $query->where('status_name', 'like', '%ompleted%');
+                $query->where('status_name', 'like', '%ompleted%')
+                    ->orWhere('status_name', 'like', '%Done%');
             })
             ->orderBy('updated_at', 'desc')
             ->limit(5)

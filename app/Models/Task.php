@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Task extends Model
 {
     protected $table = 'tasks';
-    protected $fillable = ['user_id', 'title', 'description', 'task_status_id', 'task_priority_id'];
+    protected $fillable = ['user_id', 'title', 'description', 'task_status_id', 'task_priority_id', 'deadline'];
+    protected $casts = ['deadline' => 'date'];
 
     /**
      * Get the user that owns the task.

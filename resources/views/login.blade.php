@@ -39,6 +39,12 @@
                             </div>
                         @endif
 
+                        @if (session('status'))
+                            <div class="rounded-2xl bg-green-50 px-4 py-3 text-sm text-green-700">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
                         <form action="{{ route('login') }}" method="POST" class="space-y-5">
                             @csrf
                             <div class="space-y-2">
@@ -72,7 +78,7 @@
                                     <input type="checkbox" name="remember" class="h-4 w-4 rounded border-slate-300 text-[#ff5d5a] focus:ring-[#ff5d5a]" />
                                     Remember Me
                                 </label>
-                                <a href="#" class="font-medium text-[#ff5d5a] hover:text-[#ff3f3a]">Forgot password?</a>
+                                <a href="{{ route('password.request') }}" class="font-medium text-[#ff5d5a] hover:text-[#ff3f3a]">Forgot password?</a>
                             </div>
 
                             <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl bg-[#ff5d5a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#ff4340] focus:outline-none focus:ring-2 focus:ring-[#ff5d5a]/50">Login</button>

@@ -11,6 +11,43 @@ use Illuminate\Support\Facades\Auth;
 class TaskController extends Controller
 {
     /**
+     * Show the My Task page with all of the authenticated user's tasks.
+     */
+    public function myTask()
+    {
+        $tasks = Task::where('user_id', Auth::id())
+            ->with('status', 'priority')
+            ->orderByDesc('id')
+            ->get();
+
+        return view('mytask', [
+            'tasks' => $tasks,
+            'statuses' => TaskStatus::all(),
+            'priorities' => TaskPriority::all(),
+        ]);
+    }
+
+    /**
+     * Show the Vital Task page, limited to the highest-priority tasks.
+     */
+    public function vitalTask()
+    {
+        $tasks = Task::where('user_id', Auth::id())
+            ->whereHas('priority', function ($query) {
+                $query->whereIn('priority_name', ['High', 'Critical']);
+            })
+            ->with('status', 'priority')
+            ->orderByDesc('id')
+            ->get();
+
+        return view('vitaltask', [
+            'tasks' => $tasks,
+            'statuses' => TaskStatus::all(),
+            'priorities' => TaskPriority::all(),
+        ]);
+    }
+
+    /**
      * Store a newly created task in storage.
      */
     public function store(Request $request)
@@ -20,6 +57,7 @@ class TaskController extends Controller
             'description' => 'nullable|string|max:1000',
             'task_status_id' => 'nullable|exists:task_status,id',
             'task_priority_id' => 'nullable|exists:task_priority,id',
+            'deadline' => 'nullable|date',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -44,6 +82,7 @@ class TaskController extends Controller
             'description' => 'nullable|string|max:1000',
             'task_status_id' => 'nullable|exists:task_status,id',
             'task_priority_id' => 'nullable|exists:task_priority,id',
+            'deadline' => 'nullable|date',
         ]);
 
         $task->update($validated);

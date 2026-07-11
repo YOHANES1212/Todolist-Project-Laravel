@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -101,5 +102,52 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');
+    }
+
+    public function showForgotPasswordForm()
+    {
+        return view('forgot_password');
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        // Pesan generik: jangan bocorkan apakah email tersebut terdaftar atau tidak.
+        if ($status === Password::RESET_THROTTLED) {
+            return back()->withErrors(['email' => __($status)]);
+        }
+
+        return back()->with('status', 'Jika email terdaftar, link reset password sudah kami kirim.');
+    }
+
+    public function showResetPasswordForm(Request $request, string $token)
+    {
+        return view('reset_password', [
+            'token' => $token,
+            'email' => $request->query('email'),
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill(['password' => Hash::make($password)])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
     }
 }

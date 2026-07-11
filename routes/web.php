@@ -33,13 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/tasks/{task}/priority', [TaskController::class, 'updatePriority'])->name('tasks.updatePriority');
 
     // Task Views
-    Route::get('/my-task', function () {
-        return view('mytask');
-    })->name('my_task');
+    Route::get('/my-task', [TaskController::class, 'myTask'])->name('my_task');
 
-    Route::get('/vital-task', function () {
-        return view('vitaltask');
-    })->name('vital_task');
+    Route::get('/vital-task', [TaskController::class, 'vitalTask'])->name('vital_task');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -65,4 +61,10 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
+    // Password Reset Routes
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });

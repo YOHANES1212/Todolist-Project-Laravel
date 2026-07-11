@@ -33,11 +33,47 @@
 
     {{-- Right icons + date --}}
     <div class="ml-auto flex items-center gap-3">
-        {{-- Bell --}}
-        <button class="relative shrink-0 w-9 h-9 rounded-md bg-brand text-white flex items-center justify-center transition hover:bg-brand-hover">
-            <i class="fa fa-bell" style="font-size:14px;"></i>
-            <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-800 rounded-full text-[9px] flex items-center justify-center font-bold">3</span>
-        </button>
+        {{-- Bell + Notifikasi Deadline --}}
+        <div class="relative" id="notif-wrapper">
+            <button onclick="toggleNotif()" class="relative shrink-0 w-9 h-9 rounded-md bg-brand text-white flex items-center justify-center transition hover:bg-brand-hover" title="Notifikasi tugas jatuh tempo">
+                <i class="fa fa-bell" style="font-size:14px;"></i>
+                @if (($dueCount ?? 0) > 0)
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-800 rounded-full text-[9px] flex items-center justify-center font-bold">{{ $dueCount > 9 ? '9+' : $dueCount }}</span>
+                @endif
+            </button>
+
+            <div id="notif-dropdown" class="hidden absolute right-0 top-12 z-[100] bg-white rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)] w-80 p-4 select-none">
+                <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-gray-100">
+                    <div class="text-sm font-bold text-gray-800">Tugas Jatuh Tempo</div>
+                </div>
+
+                @php
+                    $notifPriorityColors = ['Low' => '#81c784', 'Medium' => '#ffca28', 'High' => '#ff9800', 'Critical' => '#ff5252'];
+                @endphp
+
+                @forelse (($dueTasks ?? []) as $dueTask)
+                    <div class="flex items-start gap-2.5 py-2 border-b border-gray-50 last:border-b-0">
+                        <span class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background-color: {{ $notifPriorityColors[$dueTask->priority->priority_name ?? ''] ?? '#ffca28' }}"></span>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[13px] font-semibold text-gray-800 truncate">{{ $dueTask->title }}</div>
+                            <div class="text-[11px] text-brand font-medium">
+                                @if ($dueTask->deadline->isToday())
+                                    Jatuh tempo hari ini
+                                @else
+                                    Terlambat {{ $dueTask->deadline->diffInDays(now()->startOfDay()) }} hari
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-[13px] text-gray-400 py-4">Tidak ada tugas jatuh tempo 🎉</div>
+                @endforelse
+
+                <div class="mt-2 pt-2 border-t border-gray-100 text-right">
+                    <a href="{{ route('my_task') }}" class="text-xs text-brand font-semibold hover:text-brand-hover">Lihat semua tugas &rarr;</a>
+                </div>
+            </div>
+        </div>
 
         {{-- Calendar Button + Dropdown --}}
         <div class="relative" id="calendar-wrapper">
@@ -101,7 +137,7 @@
     <aside class="fixed top-16 left-0 bottom-0 w-[220px] bg-brand-light flex flex-col z-40 overflow-y-auto">
 
         {{-- Profile --}}
-        <div class="flex flex-col items-center px-4 pt-8 pb-5">
+        <a href="{{ route('profile') }}" class="flex flex-col items-center px-4 pt-8 pb-5 no-underline transition hover:opacity-90" title="Buka Profile">
             @php
                 $authUser = auth()->user();
                 $avatarName = $authUser ? ($authUser->name ?? 'User') : 'User';
@@ -119,7 +155,7 @@
             </div>
             <div class="text-white font-semibold text-sm text-center leading-tight">{{ $avatarName }}</div>
             <div class="text-red-200 text-[11px] text-center mt-0.5 opacity-90">{{ $authUser?->email ?? '' }}</div>
-        </div>
+        </a>
 
         {{-- Nav --}}
         <nav class="flex-1 px-3 pb-4">
@@ -150,8 +186,8 @@
                 </li>
                 <li class="mb-0.5">
                     <a href="{{ route('profile') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg transition {{ request()->routeIs('profile') || request()->routeIs('account.info') || request()->routeIs('change.password') ? 'bg-white text-brand font-semibold shadow-sm' : 'text-white hover:bg-white/20' }}">
-                        <i class="fa fa-cog w-5 text-center text-base shrink-0"></i>
-                        <span>Settings</span>
+                        <i class="fa fa-user-circle w-5 text-center text-base shrink-0"></i>
+                        <span>Profile</span>
                     </a>
                 </li>
             </ul>
@@ -306,10 +342,19 @@
 
     updateBadge();
 
+    // ======== NOTIFIKASI DEADLINE ========
+    function toggleNotif() {
+        document.getElementById('notif-dropdown').classList.toggle('hidden');
+    }
+
     document.addEventListener('click', function(e) {
         const wrapper  = document.getElementById('calendar-wrapper');
         const dropdown = document.getElementById('calendar-dropdown');
         if (wrapper && !wrapper.contains(e.target)) dropdown.classList.add('hidden');
+
+        const notifWrapper  = document.getElementById('notif-wrapper');
+        const notifDropdown = document.getElementById('notif-dropdown');
+        if (notifWrapper && !notifWrapper.contains(e.target)) notifDropdown.classList.add('hidden');
     });
 </script>
 
