@@ -15,88 +15,166 @@
             <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         @endif
         <style>
-            /* Prevent flash-of-unstyled-content while CSS loads */
             html, body { opacity: 0; transition: opacity 180ms ease-in; }
             noscript body { opacity: 1 !important; }
         </style>
     </head>
-    <body class="m-0 min-h-screen flex items-center justify-center p-6 text-gray-800 font-sans bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.45),transparent_20%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.25),transparent_18%),linear-gradient(135deg,#ff5d56_0%,#ff7c73_48%,#ff9a95_100%)]">
-        <section class="w-full max-w-[1120px] grid grid-cols-1 lg:grid-cols-[1fr_1.03fr] gap-8 items-stretch min-h-[680px]">
-            <aside class="relative bg-white/[0.18] border border-white/[0.22] rounded-[32px] p-8 overflow-hidden text-white flex flex-col justify-between min-h-[320px] lg:min-h-0 before:content-[''] before:absolute before:-top-6 before:-right-6 before:w-[220px] before:h-[220px] before:bg-white/25 before:rounded-full before:blur-[36px] after:content-[''] after:absolute after:-bottom-8 after:-left-8 after:w-40 after:h-40 after:bg-white/15 after:rounded-full after:blur-[24px]">
-                <div class="relative">
-                    <h2 class="m-0 text-[clamp(2.4rem,4vw,3.4rem)] leading-[1.05] tracking-[-0.04em]">Register</h2>
-                    <p class="mt-6 max-w-[20rem] text-base leading-[1.75] text-white/92">Gabung sekarang untuk akses fitur kolaborasi dan manajemen tugas dalam satu dashboard.</p>
-                </div>
-                <div class="relative w-full min-h-[420px] flex items-center justify-center before:content-[''] before:absolute before:rounded-full before:bg-white/[0.18] before:w-[140px] before:h-[140px] before:top-5 before:left-6 after:content-[''] after:absolute after:rounded-full after:bg-white/[0.18] after:w-[92px] after:h-[92px] after:bottom-5 after:right-6">
-                    <div class="relative w-[235px] h-[335px] bg-white/90 rounded-[28px] shadow-[0_40px_100px_rgba(15,23,42,0.12)] flex flex-col justify-center p-7 gap-[18px]">
-                        <span class="block w-full h-[18px] rounded-full bg-[#ff9f96]"></span>
-                        <span class="block w-[70%] h-[18px] rounded-full bg-[#ff9f96]"></span>
-                        <div class="w-20 h-20 bg-[#1e3a8a] rounded-full mx-auto shadow-[inset_0_-6px_0_rgba(0,0,0,0.15)]"></div>
-                        <span class="block w-[85%] h-[18px] rounded-full bg-[#ff9f96]"></span>
-                        <span class="block w-[60%] h-[18px] rounded-full bg-[#ff9f96]"></span>
+    <body class="min-h-screen bg-gradient-to-br from-[#ff6256] via-[#ff7b76] to-[#ff9690] text-slate-900">
+        <div class="min-h-screen flex items-center justify-center px-4 py-10">
+            <div class="relative w-full max-w-[1040px] overflow-hidden rounded-[2rem] bg-white/95 shadow-[0_45px_120px_rgba(0,0,0,0.18)] backdrop-blur-sm ring-1 ring-white/60">
+                <div class="absolute -right-28 top-8 h-72 w-72 rounded-full bg-white/20 blur-3xl"></div>
+                <div class="absolute -left-16 bottom-10 h-72 w-72 rounded-full bg-[#ffffff]/15 blur-3xl"></div>
+
+                <div class="grid min-h-[540px] grid-cols-1 lg:grid-cols-[45%_55%]">
+                    <div class="relative flex flex-col justify-center gap-6 bg-white px-8 py-12 sm:px-12 lg:px-14">
+                        <div class="space-y-3">
+                            <h1 class="text-4xl font-semibold tracking-tight text-slate-900">Sign Up</h1>
+                            <p class="max-w-sm text-sm text-slate-500">Buat akun untuk mengelola tugas dan kolaborasi Anda.</p>
+                        </div>
+
+                        @if ($errors->any())
+                            <div class="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-600">
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
+
+                        <form action="{{ route('register') }}" method="POST" class="space-y-5">
+                            @csrf
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <div class="space-y-2">
+                                    <label for="first_name" class="sr-only">First Name</label>
+                                    <div class="relative">
+                                        <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                                <circle cx="12" cy="7" r="4" />
+                                            </svg>
+                                        </span>
+                                        <input id="first_name" name="first_name" type="text" value="{{ old('first_name') }}" placeholder="First Name" required class="w-full rounded-2xl border border-slate-200 bg-[#F8F8F8] py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#ff5d5a] focus:ring-2 focus:ring-[#ff5d5a]/15" />
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="last_name" class="sr-only">Last Name</label>
+                                    <div class="relative">
+                                        <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                                <circle cx="12" cy="7" r="4" />
+                                            </svg>
+                                        </span>
+                                        <input id="last_name" name="last_name" type="text" value="{{ old('last_name') }}" placeholder="Last Name" required class="w-full rounded-2xl border border-slate-200 bg-[#F8F8F8] py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#ff5d5a] focus:ring-2 focus:ring-[#ff5d5a]/15" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="email" class="sr-only">Email</label>
+                                <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="5" width="18" height="14" rx="2" />
+                                            <path d="m4 7 8 6 8-6" />
+                                        </svg>
+                                    </span>
+                                    <input id="email" name="email" type="email" value="{{ old('email') }}" placeholder="Enter Email" required class="w-full rounded-2xl border border-slate-200 bg-[#F8F8F8] py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#ff5d5a] focus:ring-2 focus:ring-[#ff5d5a]/15" />
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="password" class="sr-only">Password</label>
+                                <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                        </svg>
+                                    </span>
+                                    <input id="password" name="password" type="password" placeholder="Enter Password" required class="w-full rounded-2xl border border-slate-200 bg-[#F8F8F8] py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#ff5d5a] focus:ring-2 focus:ring-[#ff5d5a]/15" />
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="password_confirmation" class="sr-only">Confirm Password</label>
+                                <div class="relative">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                        </svg>
+                                    </span>
+                                    <input id="password_confirmation" name="password_confirmation" type="password" placeholder="Confirm Password" required class="w-full rounded-2xl border border-slate-200 bg-[#F8F8F8] py-3 pl-12 pr-4 text-sm text-slate-900 outline-none transition focus:border-[#ff5d5a] focus:ring-2 focus:ring-[#ff5d5a]/15" />
+                                </div>
+                            </div>
+
+                            <label class="inline-flex items-center gap-2 text-sm text-slate-600">
+                                <input type="checkbox" name="agree_terms" required class="h-4 w-4 rounded border-slate-300 text-[#ff5d5a] focus:ring-[#ff5d5a]" />
+                                I agree to all terms
+                            </label>
+
+                            <button type="submit" class="inline-flex w-full items-center justify-center rounded-2xl bg-[#ff5d5a] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#ff4340] focus:outline-none focus:ring-2 focus:ring-[#ff5d5a]/50">Register</button>
+                        </form>
+
+                        <div class="relative py-4">
+                            <div class="absolute inset-x-0 top-1/2 h-px bg-slate-200"></div>
+                            <p class="relative mx-auto inline-block bg-white px-3 text-sm text-slate-500">Or, register with</p>
+                        </div>
+
+                        <div class="flex items-center justify-center gap-4">
+                            <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#3b5998] transition hover:bg-[#f7f7f7]">
+                                <span class="sr-only">Register with Facebook</span>
+                                <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5 3.657 9.125 8.438 9.876v-6.987H7.898v-2.89h2.54V9.833c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.463h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.125 22 17 22 12z"/></svg>
+                            </a>
+                            <a href="{{ route('auth.google') }}" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#de5246] transition hover:bg-[#f7f7f7]">
+                                <span class="sr-only">Register with Google</span>
+                                <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M21.35 11.1H12v2.8h5.35c-.24 1.3-.96 2.4-2.05 3.12v2.6h3.33c1.95-1.8 3.07-4.45 3.07-7.52 0-.53-.04-1.05-.12-1.55z"/><path d="M12 22c2.7 0 4.96-.9 6.61-2.46l-3.33-2.6c-.92.62-2.1.98-3.28.98-2.52 0-4.66-1.7-5.43-3.96H2.98v2.49C4.6 19.9 8.04 22 12 22z"/><path d="M6.57 13.96c-.2-.62-.32-1.28-.32-1.96s.12-1.34.32-1.96V7.55H2.98A9.993 9.993 0 0 0 2 12c0 1.6.38 3.1 1.05 4.45l3.52-2.49z"/><path d="M12 5.4c1.47 0 2.8.5 3.84 1.48l2.88-2.88C16.94 2.38 14.7 1.4 12 1.4 8.04 1.4 4.6 3.5 2.98 7.55l3.52 2.49C7.34 7.1 9.48 5.4 12 5.4z"/></svg>
+                            </a>
+                            <a href="#" class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-[#c13584] transition hover:bg-[#f7f7f7]">
+                                <span class="sr-only">Register with Instagram</span>
+                                <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5z"/><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm5.5-.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>
+                            </a>
+                        </div>
+
+                        <p class="text-center text-sm text-slate-500">Already have an account? <a href="{{ route('login') }}" class="font-semibold text-[#ff5d5a] hover:text-[#ff3f3a]">Sign In</a></p>
+                    </div>
+
+                    <div class="relative hidden overflow-hidden bg-[#ffebe9] p-8 lg:flex lg:flex-col lg:items-center lg:justify-center">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.75),_transparent_34%)]"></div>
+                        <div class="relative z-10 flex h-full w-full items-center justify-center">
+                            <svg viewBox="0 0 400 420" class="w-full max-w-[360px]" role="img" aria-label="Ilustrasi register aman">
+                                <ellipse cx="200" cy="392" rx="150" ry="14" fill="#f7c9c3" opacity="0.6" />
+                                <circle cx="196" cy="210" r="165" fill="#ffffff" opacity="0.55" />
+                                <path d="M230,140 C280,120 340,150 345,210 C350,270 320,330 270,340 C230,348 210,300 215,250 C218,210 200,160 230,140 Z" fill="#e7c9f2" opacity="0.85" />
+                                <rect x="55" y="70" width="150" height="280" rx="26" fill="#4f7fe8" />
+                                <rect x="70" y="88" width="120" height="220" rx="12" fill="#ffffff" />
+                                <circle cx="130" cy="150" r="32" fill="#22c55e" />
+                                <path d="M114,150 L125,161 L148,136" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                                <rect x="86" y="238" width="88" height="46" rx="10" fill="#4f7fe8" />
+                                <rect x="98" y="252" width="50" height="6" rx="3" fill="#ffffff" opacity="0.85" />
+                                <rect x="98" y="264" width="34" height="6" rx="3" fill="#ffffff" opacity="0.6" />
+                                <rect x="110" y="322" width="40" height="6" rx="3" fill="#e5eaf5" />
+                                <path d="M232,260 L226,360 C226,368 232,372 240,372 C248,372 252,368 251,360 L248,262 Z" fill="#33415c" />
+                                <path d="M262,262 L268,360 C269,368 263,372 255,372 C247,372 244,368 246,360 L250,262 Z" fill="#2b3750" />
+                                <ellipse cx="236" cy="372" rx="14" ry="7" fill="#161b26" />
+                                <ellipse cx="262" cy="372" rx="14" ry="7" fill="#161b26" />
+                                <path d="M226,168 C214,178 208,206 212,236 C213,244 224,244 225,236 C222,208 228,186 236,172 Z" fill="#8b5cf6" />
+                                <circle cx="214" cy="238" r="8" fill="#f4bd94" />
+                                <path d="M222,190 C220,165 234,148 256,148 C278,148 292,166 288,192 L284,266 C284,276 274,282 256,282 C238,282 226,276 226,266 Z" fill="#8b5cf6" />
+                                <path d="M284,168 C298,172 306,188 302,206 C300,214 290,212 289,204 C291,192 286,180 278,174 Z" fill="#8b5cf6" />
+                                <circle cx="300" cy="208" r="9" fill="#f4bd94" />
+                                <rect x="292" y="188" width="18" height="30" rx="4" fill="#1f2937" transform="rotate(-8 301 203)" />
+                                <rect x="295" y="192" width="12" height="22" rx="2" fill="#60a5fa" transform="rotate(-8 301 203)" />
+                                <rect x="248" y="128" width="16" height="18" fill="#f4bd94" />
+                                <circle cx="256" cy="112" r="23" fill="#f4bd94" />
+                                <path d="M233,108 C231,88 242,76 256,76 C270,76 281,88 279,108 C279,98 271,92 262,92 L250,92 C241,92 233,98 233,108 Z" fill="#2b2138" />
+                                <circle cx="277" cy="82" r="9" fill="#2b2138" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-            </aside>
+            </div>
+        </div>
 
-            <article class="bg-white rounded-[32px] shadow-[0_38px_120px_rgba(15,23,42,0.15)] p-11 flex flex-col gap-6">
-                <h1 class="m-0 text-[2.25rem] tracking-[-0.05em]">Sign Up</h1>
-                @if ($errors->any())
-                    <div style="background:#fee2e2; color:#b91c1c; padding:12px 16px; border-radius:14px; font-size:0.9rem;">
-                        <ul style="margin:0; padding-left:18px;">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <form action="{{ route('register') }}" method="POST" class="grid gap-4">
-                    @csrf
-                    <div class="grid grid-cols-2 gap-4">
-                        <label class="flex items-center gap-3 border border-gray-200 rounded-[18px] px-4 py-3.5 bg-[#f8f8f8]">
-                            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 stroke-gray-400 shrink-0"><path d="M15.5 7.5l-7 7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 7.5h6v6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <input type="text" name="first_name" value="{{ old('first_name') }}" placeholder="Enter First Name" required class="border-none bg-transparent w-full text-[0.96rem] outline-none text-gray-900 placeholder:text-gray-400">
-                        </label>
-                        <label class="flex items-center gap-3 border border-gray-200 rounded-[18px] px-4 py-3.5 bg-[#f8f8f8]">
-                            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 stroke-gray-400 shrink-0"><path d="M15.5 7.5l-7 7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 7.5h6v6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <input type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Enter Last Name" required class="border-none bg-transparent w-full text-[0.96rem] outline-none text-gray-900 placeholder:text-gray-400">
-                        </label>
-                    </div>
-
-                    <label class="flex items-center gap-3 border border-gray-200 rounded-[18px] px-4 py-3.5 bg-[#f8f8f8]">
-                        <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 stroke-gray-400 shrink-0"><path d="M3 11.5a4.5 4.5 0 0 1 4.5-4.5h9a4.5 4.5 0 0 1 4.5 4.5v7a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-7Z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 11.5V9.5a4 4 0 0 0-8 0v2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email" required class="border-none bg-transparent w-full text-[0.96rem] outline-none text-gray-900 placeholder:text-gray-400">
-                    </label>
-
-                    <label class="flex items-center gap-3 border border-gray-200 rounded-[18px] px-4 py-3.5 bg-[#f8f8f8]">
-                        <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 stroke-gray-400 shrink-0"><path d="M3 11.5a4.5 4.5 0 0 1 4.5-4.5h9a4.5 4.5 0 0 1 4.5 4.5v7a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-7Z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 11.5V9.5a4 4 0 0 0-8 0v2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <input type="password" name="password" placeholder="Enter Password" required class="border-none bg-transparent w-full text-[0.96rem] outline-none text-gray-900 placeholder:text-gray-400">
-                    </label>
-
-                    <label class="flex items-center gap-3 border border-gray-200 rounded-[18px] px-4 py-3.5 bg-[#f8f8f8]">
-                        <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 stroke-gray-400 shrink-0"><path d="M3 11.5a4.5 4.5 0 0 1 4.5-4.5h9a4.5 4.5 0 0 1 4.5 4.5v7a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-7Z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 11.5V9.5a4 4 0 0 0-8 0v2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <input type="password" name="password_confirmation" placeholder="Confirm Password" required class="border-none bg-transparent w-full text-[0.96rem] outline-none text-gray-900 placeholder:text-gray-400">
-                    </label>
-
-                    <label class="flex items-center gap-3 text-[0.95rem] text-gray-600">
-                        <input type="checkbox" name="agree_terms" required class="w-[18px] h-[18px] accent-red-500">
-                        I agree to all terms
-                    </label>
-
-                    <button type="submit" class="border-none rounded-2xl px-5 py-4 bg-gradient-to-r from-[#ff5d56] to-[#ff7d78] text-white text-base font-semibold cursor-pointer transition hover:-translate-y-px hover:shadow-[0_18px_40px_rgba(249,115,22,0.18)]">Register</button>
-                </form>
-
-                <div class="relative text-center my-1 before:content-[''] before:absolute before:top-1/2 before:inset-x-0 before:h-px before:bg-gray-200">
-                    <span class="relative bg-white px-3 text-[0.85rem] text-gray-400">Atau daftar dengan</span>
-                </div>
-
-                <a href="{{ route('auth.google') }}" class="flex items-center justify-center gap-2.5 border border-gray-200 rounded-2xl px-5 py-[13px] bg-white text-gray-700 text-[0.95rem] font-semibold no-underline transition hover:bg-gray-50">
-                    <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M21.35 11.1H12v2.8h5.35c-.24 1.3-.96 2.4-2.05 3.12v2.6h3.33c1.95-1.8 3.07-4.45 3.07-7.52 0-.53-.04-1.05-.12-1.55z"/><path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.61-2.46l-3.33-2.6c-.92.62-2.1.98-3.28.98-2.52 0-4.66-1.7-5.43-3.96H2.98v2.49C4.6 19.9 8.04 22 12 22z"/><path fill="#FBBC05" d="M6.57 13.96c-.2-.62-.32-1.28-.32-1.96s.12-1.34.32-1.96V7.55H2.98A9.993 9.993 0 0 0 2 12c0 1.6.38 3.1 1.05 4.45l3.52-2.49z"/><path fill="#EA4335" d="M12 5.4c1.47 0 2.8.5 3.84 1.48l2.88-2.88C16.94 2.38 14.7 1.4 12 1.4 8.04 1.4 4.6 3.5 2.98 7.55l3.52 2.49C7.34 7.1 9.48 5.4 12 5.4z"/></svg>
-                    Daftar dengan Google
-                </a>
-
-                <p class="text-center text-[0.95rem] text-gray-500">Already have an account? <a href="{{ route('login') }}" class="text-red-500 font-semibold no-underline">Sign In</a></p>
-            </article>
-        </section>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 document.documentElement.style.opacity = '1';
